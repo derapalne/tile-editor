@@ -1,0 +1,85 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva,
+        Verdana, sans-serif;
+    color: black;
+    border: none;
+}
+
+body {
+    background-color: #3ab0aa;
+}
+
+#screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+    user-select: none;
+}
+
+.saving {
+    filter: brightness(130%) saturate(70%);
+}
+
+.buttons {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.buttons>button {
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.row {
+    display: flex;
+}
+
+.cell {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+
+.background-sprite {
+    width: 24px;
+    height: 24px;
+    image-rendering: pixelated;
+    transition: 0.1s;
+}
+
+.editable {
+    pointer-events: all;
+    transition: 0.2s filter;
+}
+
+.editable:hover {
+    filter: brightness(120%);
+}
+
+.current-element {
+    width: 36px;
+    height: 36px;
+    image-rendering: pixelated;
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    border: 2px solid #0995;
+}
+
+.screen-content {
+    border: 2px solid #0995;
+}
+
+.instructions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.invisible {
+    opacity: 0;
+}
