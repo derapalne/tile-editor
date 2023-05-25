@@ -13,7 +13,7 @@ const screenContainer = getById("screen");
 
 const currentSpriteElement = document.createElement("img");
 currentSpriteElement.classList.add("current-element");
-currentSpriteElement.src = `/img/${currentSprite}.png`;
+currentSpriteElement.src = `img/${currentSprite}.png`;
 currentSpriteElement.addEventListener("click", changeCurrentSprite);
 screenContainer.appendChild(currentSpriteElement);
 
@@ -60,7 +60,7 @@ function changeCurrentSprite() {
     currentSprite++;
     if (currentSprite >= totalSprites) currentSprite = 0;
     currentSprite = currentSprite.toString().padStart(2, "0");
-    currentSpriteElement.src = `/img/${currentSprite}.png`;
+    currentSpriteElement.src = `img/${currentSprite}.png`;
 }
 
 window.addEventListener("keyup", (e) => {
@@ -73,14 +73,14 @@ window.addEventListener("keyup", (e) => {
 function paintSprite(coords) {
     const cell = getById(`cell-${coords}`);
     const sprite = cell.children.item(0);
-    sprite.src = `/img/${currentSprite}.png`;
+    sprite.src = `img/${currentSprite}.png`;
     sprite.setAttribute("data-sprite", currentSprite);
 }
 
 function eraseSprite(coords) {
     const cell = getById(`cell-${coords}`);
     const sprite = cell.children.item(0);
-    sprite.src = `/img/00.png`;
+    sprite.src = `img/00.png`;
     sprite.setAttribute("data-sprite", "00");
 }
 
@@ -88,7 +88,7 @@ function pickSprite(coords) {
     const cell = getById(`cell-${coords}`);
     const sprite = cell.children.item(0);
     currentSprite = sprite.dataset.sprite;
-    currentSpriteElement.src = `/img/${currentSprite}.png`;
+    currentSpriteElement.src = `img/${currentSprite}.png`;
 }
 
 function initScreenEditable() {
@@ -111,14 +111,14 @@ function initScreenEditable() {
             });
             const sprite = document.createElement("img");
             if (y > 18) {
-                sprite.src = "/img/02.png";
+                sprite.src = "img/02.png";
                 sprite.setAttribute("data-sprite", "02");
             } else {
                 if (y === 18) {
-                    sprite.src = "/img/01.png";
+                    sprite.src = "img/01.png";
                     sprite.setAttribute("data-sprite", "01");
                 } else {
-                    sprite.src = "/img/00.png";
+                    sprite.src = "img/00.png";
                     sprite.setAttribute("data-sprite", "00");
                 }
             }
@@ -160,7 +160,7 @@ function loadPattern() {
             const cellCoords = `${x}-${23 - y}`;
             const cell = getById(`cell-${cellCoords}`);
             const sprite = cell.children.item(0);
-            sprite.src = `/img/${rowCells[x]}.png`;
+            sprite.src = `img/${rowCells[x]}.png`;
             sprite.setAttribute("data-sprite", rowCells[x]);
             sprite.classList.add("invisible");
         }
