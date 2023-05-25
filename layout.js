@@ -171,7 +171,6 @@ function loadPattern() {
 function loadPatternAnimation() {
     let y = 0;
     let x = 0;
-    screenContent.style.opacity = 1;
     const interval = setInterval(() => {
         if (y > 23) clearInterval(interval);
         if (x > 31) {
@@ -185,6 +184,7 @@ function loadPatternAnimation() {
         sprite.classList.remove("invisible");
         x++;
     }, 0.1);
+    screenContent.style.opacity = 1;
 }
 
 const editButton = getById("edit-button");
