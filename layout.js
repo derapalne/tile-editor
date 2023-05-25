@@ -91,7 +91,27 @@ function pickSprite(coords) {
     currentSpriteElement.src = `img/${currentSprite}.png`;
 }
 
-function initScreenEditable() {
+function initScreenEditable(preset) {
+    let filling, topping;
+    switch (preset) {
+        case "grass":
+            filling = "img/02.png";
+            topping = "img/01.png";
+            break;
+        case "ocean":
+            filling = "img/04.png";
+            topping = "img/05.png";
+            break;
+        case "stone":
+            filling = "img/08.png";
+            topping = "img/09.png";
+            break;
+        default:
+            filling = "img/02.png";
+            topping = "img/01.png";
+            break;
+    }
+    screenContent.innerHTML = "";
     for (let y = 0; y < 24; y++) {
         const row = document.createElement("div");
         row.setAttribute("id", `row-${23 - y}`);
@@ -111,12 +131,12 @@ function initScreenEditable() {
             });
             const sprite = document.createElement("img");
             if (y > 18) {
-                sprite.src = "img/02.png";
-                sprite.setAttribute("data-sprite", "02");
+                sprite.src = filling;
+                sprite.setAttribute("data-sprite", filling.substring(4,6));
             } else {
                 if (y === 18) {
-                    sprite.src = "img/01.png";
-                    sprite.setAttribute("data-sprite", "01");
+                    sprite.src = topping;
+                    sprite.setAttribute("data-sprite", topping.substring(4,6));
                 } else {
                     sprite.src = "img/00.png";
                     sprite.setAttribute("data-sprite", "00");
@@ -205,6 +225,24 @@ loadButton.addEventListener("click", (e) => {
     loadPattern();
 });
 
-initScreenEditable();
+const grassPreset = getById("grass-preset");
+grassPreset.addEventListener("click", (e) => {
+    e.preventDefault();
+    initScreenEditable("grass");
+});
+
+const oceanPreset = getById("ocean-preset");
+oceanPreset.addEventListener("click", (e) => {
+    e.preventDefault();
+    initScreenEditable("ocean");
+});
+
+const stonePreset = getById("stone-preset");
+stonePreset.addEventListener("click", (e) => {
+    e.preventDefault();
+    initScreenEditable("stone");
+});
+
+initScreenEditable("grass");
 
 screenContainer.appendChild(screenContent);

@@ -29,9 +29,35 @@ body {
     justify-content: space-around;
 }
 
+.presets {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
 .buttons>button {
     border-radius: 5px;
     padding: 2px;
+}
+
+.presets>button {
+    border-radius: 5px;
+    padding: 2px;
+    margin: 0 10px;
+}
+
+#grass-preset {
+    background-color: #363;
+    color: white
+}
+
+#ocean-preset {
+    background-color: #336;
+    color: white
+}
+
+#stone-preset {
+    background-color: #999;
 }
 
 .row {
