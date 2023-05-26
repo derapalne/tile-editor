@@ -5,7 +5,7 @@ function getById(id) {
 let editable = true;
 let clicking = false;
 let currentSprite = "01";
-const totalSprites = 11;
+const totalSprites = 14;
 
 const cellSeparator = ",";
 const rowSeparatosr = ";";
@@ -204,80 +204,6 @@ function initScreenEditable(preset) {
         screenContent.appendChild(row);
     }
 }
-
-function savePattern() {
-    screenContainer.classList.add("saving");
-    let pattern = "";
-    for (let y = 0; y < 24; y++) {
-        for (let x = 0; x < 32; x++) {
-            const coords = `${x}-${23 - y}`;
-            const cell = getById(`cell-${coords}`);
-            const sprite = cell.children.item(0);
-            pattern += `${sprite.dataset.sprite}-`;
-        }
-        pattern += ";";
-    }
-    localStorage.setItem("pattern", pattern);
-    setTimeout(() => {
-        screenContainer.classList.remove("saving");
-    }, Math.random() * 400 + 300);
-}
-
-function loadPattern() {
-    screenContent.style.opacity = 0;
-    const pattern = localStorage.getItem("pattern");
-    if (!pattern) return false;
-    const patternRows = pattern.split(";", 24);
-    for (let y = 0; y < patternRows.length; y++) {
-        const rowCells = patternRows[y].split("-", 32);
-        for (let x = 0; x < rowCells.length; x++) {
-            const cellCoords = `${x}-${23 - y}`;
-            const cell = getById(`cell-${cellCoords}`);
-            const sprite = cell.children.item(0);
-            sprite.src = `img/${rowCells[x]}.png`;
-            sprite.setAttribute("data-sprite", rowCells[x]);
-            sprite.classList.add("invisible");
-        }
-    }
-    loadPatternAnimation();
-}
-
-function loadPatternAnimation() {
-    let y = 0;
-    let x = 0;
-    const interval = setInterval(() => {
-        if (y > 23) clearInterval(interval);
-        if (x > 31) {
-            y++;
-            x = 0;
-        }
-        const cellCoords = `${x}-${23 - y}`;
-        const cell = getById(`cell-${cellCoords}`);
-        if (!cell) return;
-        const sprite = cell.children.item(0);
-        sprite.classList.remove("invisible");
-        x++;
-    }, 0.1);
-    screenContent.style.opacity = 1;
-}
-
-const editButton = getById("edit-button");
-editButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    toggleEditMode();
-});
-
-const saveButton = getById("save-button");
-saveButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    savePattern();
-});
-
-const loadButton = getById("load-button");
-loadButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    loadPattern();
-});
 
 const grassPreset = getById("grass-preset");
 grassPreset.addEventListener("click", (e) => {
