@@ -36,8 +36,9 @@ function spriteRightClickHandler(e, cellCoords) {
     eraseSprite(cellCoords);
 }
 
-function spriteMouseDownHandler(e) {
+function spriteMouseDownHandler(e, cellCoords) {
     e.preventDefault();
+    paintSprite(cellCoords);
     clicking = true;
 }
 
@@ -46,7 +47,7 @@ function spriteMouseUpHandler(e) {
 }
 
 function spriteMouseOverHandler(e, cellCoords) {
-    if(clicking) {
+    if (clicking) {
         paintSprite(cellCoords);
     }
 }
@@ -58,7 +59,7 @@ function toggleEditMode() {
             cell.classList.remove("editable");
             cell.removeEventListener("contextmenu", (e) => spriteRightClickHandler(e, cellCoords));
             cell.removeEventListener("click", (e) => spriteClickHandler(e, cellCoords));
-            cell.removeEventListener("mousedown", (e) => spriteMouseDownHandler(e));
+            cell.removeEventListener("mousedown", (e) => spriteMouseDownHandler(e, cellCoords));
             cell.removeEventListener("mouseup", (e) => spriteMouseUpHandler(e));
             cell.removeEventListener("mouseover", (e) => spriteMouseOverHandler(e));
         });
@@ -71,7 +72,7 @@ function toggleEditMode() {
                 cell.classList.add("editable");
                 cell.addEventListener("contextmenu", (e) => spriteRightClickHandler(e, cellCoords));
                 cell.addEventListener("click", (e) => spriteClickHandler(e, cellCoords));
-                cell.addEventListener("mousedown", (e) => spriteMouseDownHandler(e));
+                cell.addEventListener("mousedown", (e) => spriteMouseDownHandler(e, cellCoords));
                 cell.addEventListener("mouseup", (e) => spriteMouseUpHandler(e));
                 cell.addEventListener("mouseover", (e) => spriteMouseOverHandler(e));
             }
@@ -180,7 +181,7 @@ function initScreenEditable(preset) {
             cell.classList.add("cell", "editable");
             cell.addEventListener("contextmenu", (e) => spriteRightClickHandler(e, cellCoords));
             cell.addEventListener("click", (e) => spriteClickHandler(e, cellCoords));
-            cell.addEventListener("mousedown", (e) => spriteMouseDownHandler(e));
+            cell.addEventListener("mousedown", (e) => spriteMouseDownHandler(e, cellCoords));
             cell.addEventListener("mouseup", (e) => spriteMouseUpHandler(e));
             cell.addEventListener("mouseover", (e) => spriteMouseOverHandler(e, cellCoords));
             const sprite = document.createElement("img");
