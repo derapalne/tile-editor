@@ -37,6 +37,7 @@ function spriteRightClickHandler(e, cellCoords) {
 }
 
 function spriteMouseDownHandler(e, cellCoords) {
+    if(e.button === 2) return;
     e.preventDefault();
     paintSprite(cellCoords);
     clicking = true;
