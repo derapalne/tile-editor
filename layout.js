@@ -7,7 +7,7 @@ let clicking = false;
 let mode = "b";
 let currentSprite = "01";
 let currentBackground = "01";
-const totalSprites = 7;
+const totalSprites = 10;
 const totalBackgrounds = 8;
 
 const cellSeparator = ",";
@@ -60,6 +60,10 @@ function spriteMouseUpHandler(e) {
 
 function spriteMouseOverHandler(e, cellCoords) {
     if (clicking) {
+        if(e.buttons === 0) {
+            clicking = false;
+            return;
+        }
         paintSprite(cellCoords);
     }
 }
@@ -139,7 +143,7 @@ window.addEventListener("keyup", (e) => {
         if (mode === "s") changeCurrentSprite();
         else if (mode === "b") changeCurrentBackground();
     }
-    if(e.key === "Alt") {
+    if(e.key === "CapsLock") {
         e.preventDefault();
         changeMode(mode === "b" ? "s" : "b");
     }
