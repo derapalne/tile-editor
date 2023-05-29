@@ -207,11 +207,11 @@ function initScreenEditable(preset) {
             break;
         case "ocean":
             filling = "img/03b.png";
-            topping = "img/04b.png";
+            topping = "img/06s.png";
             break;
         case "stone":
-            filling = "img/05b.png";
-            topping = "img/06b.png";
+            filling = "img/04b.png";
+            topping = "img/05b.png";
             break;
         default:
             filling = "img/02b.png";
