@@ -153,3 +153,15 @@ body {
 .invisible {
     opacity: 0;
 }
+
+.manual {
+    font-size: medium;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.footer {
+    margin: 30px;
+    font-weight: bold;
+    text-align: center;
+}

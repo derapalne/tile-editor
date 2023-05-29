@@ -133,10 +133,15 @@ function changeCurrentBackground() {
 }
 
 window.addEventListener("keyup", (e) => {
+    console.log(e.key);
     if (e.key === " ") {
         e.preventDefault();
         if (mode === "s") changeCurrentSprite();
         else if (mode === "b") changeCurrentBackground();
+    }
+    if(e.key === "Alt") {
+        e.preventDefault();
+        changeMode(mode === "b" ? "s" : "b");
     }
 });
 
