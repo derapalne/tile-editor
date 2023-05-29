@@ -7,15 +7,17 @@ function savePattern() {
         for (let x = 0; x < 32; x++) {
             const coords = `${x}-${23 - y}`;
             const cell = getById(`cell-${coords}`);
-            const sprite = cell.children.item(0);
-            pattern += `${sprite.dataset.sprite}-`;
+            const background = cell.children.item(0);
+            const sprite = cell.children.item(1);
+            
+            pattern += `${background.dataset.sprite}${sprite.dataset.sprite}-`;
         }
         pattern += ";";
     }
     localStorage.setItem("pattern-" + currentSlot, pattern);
     setTimeout(() => {
         screenContainer.classList.remove("saving");
-    }, Math.random() * 400 + 300);
+    }, Math.random() * 350 + 150);
 }
 
 function loadPattern() {
@@ -29,12 +31,20 @@ function loadPattern() {
     const patternRows = pattern.split(";", 24);
     for (let y = 0; y < patternRows.length; y++) {
         const rowCells = patternRows[y].split("-", 32);
+        if(rowCells[0].length !== 4) {
+            alert("Corrupt, broken, or old pattern!");
+            break;
+        }
         for (let x = 0; x < rowCells.length; x++) {
             const cellCoords = `${x}-${23 - y}`;
             const cell = getById(`cell-${cellCoords}`);
-            const sprite = cell.children.item(0);
-            sprite.src = `img/${rowCells[x]}.png`;
-            sprite.setAttribute("data-sprite", rowCells[x]);
+            const background = cell.children.item(0);
+            background.src = `img/${rowCells[x].substring(0,2)}b.png`;
+            background.setAttribute("data-sprite", rowCells[x].substring(0,2));
+            background.classList.add("invisible");
+            const sprite = cell.children.item(1);
+            sprite.src = `img/${rowCells[x].substring(2,4)}s.png`;
+            sprite.setAttribute("data-sprite", rowCells[x].substring(2,4));
             sprite.classList.add("invisible");
         }
     }
@@ -53,7 +63,9 @@ function loadPatternAnimation() {
         const cellCoords = `${x}-${23 - y}`;
         const cell = getById(`cell-${cellCoords}`);
         if (!cell) return;
-        const sprite = cell.children.item(0);
+        const background = cell.children.item(0);
+        background.classList.remove("invisible");
+        const sprite = cell.children.item(1);
         sprite.classList.remove("invisible");
         x++;
     }, 0.1);

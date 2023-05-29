@@ -4,8 +4,11 @@ function getById(id) {
 
 let editable = true;
 let clicking = false;
+let mode = "b";
 let currentSprite = "01";
-const totalSprites = 14;
+let currentBackground = "01";
+const totalSprites = 7;
+const totalBackgrounds = 8;
 
 const cellSeparator = ",";
 const rowSeparatosr = ";";
@@ -13,13 +16,21 @@ const rowSeparatosr = ";";
 const screenContainer = getById("screen");
 
 const currentSpriteElement = document.createElement("img");
-currentSpriteElement.classList.add("current-element");
-currentSpriteElement.src = `img/${currentSprite}.png`;
+currentSpriteElement.classList.add("current-sprite-element");
+currentSpriteElement.src = `img/${currentSprite}s.png`;
 currentSpriteElement.addEventListener("click", changeCurrentSprite);
 screenContainer.appendChild(currentSpriteElement);
 
+const currentBackgroundElement = document.createElement("img");
+currentBackgroundElement.classList.add("current-background-element");
+currentBackgroundElement.src = `img/${currentBackground}b.png`;
+currentBackgroundElement.addEventListener("click", changeCurrentBackground);
+screenContainer.appendChild(currentBackgroundElement);
+
 const screenContent = document.createElement("div");
 screenContent.classList.add("screen-content");
+
+const modeButton = getById("mode-button");
 
 function spriteClickHandler(e, cellCoords) {
     if (e.shiftKey) {
@@ -37,7 +48,7 @@ function spriteRightClickHandler(e, cellCoords) {
 }
 
 function spriteMouseDownHandler(e, cellCoords) {
-    if(e.button === 2) return;
+    if (e.button === 2) return;
     e.preventDefault();
     paintSprite(cellCoords);
     clicking = true;
@@ -83,39 +94,76 @@ function toggleEditMode() {
     editable = !editable;
 }
 
+function changeMode(code) {
+    switch (code) {
+        case "s":
+            mode = "s";
+            currentSpriteElement.classList.add("selected-element");
+            currentBackgroundElement.classList.remove("selected-element");
+            modeButton.innerText = "Mode: Sprite";
+            break;
+        case "b":
+            mode = "b";
+            currentSpriteElement.classList.remove("selected-element");
+            currentBackgroundElement.classList.add("selected-element");
+            modeButton.innerText = "Mode: Back";
+            break;
+    }
+}
+
+modeButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    mode === "s" ? changeMode("b") : changeMode("s");
+});
+
 function changeCurrentSprite() {
+    if (mode === "b") return changeMode("s");
     currentSprite++;
     if (currentSprite >= totalSprites) currentSprite = 0;
     currentSprite = currentSprite.toString().padStart(2, "0");
-    currentSpriteElement.src = `img/${currentSprite}.png`;
+    currentSpriteElement.src = `img/${currentSprite}s.png`;
+}
+
+function changeCurrentBackground() {
+    if (mode === "s") return changeMode("b");
+    currentBackground++;
+    if (currentBackground >= totalBackgrounds) currentBackground = 0;
+    currentBackground = currentBackground.toString().padStart(2, "0");
+    currentBackgroundElement.src = `img/${currentBackground}b.png`;
 }
 
 window.addEventListener("keyup", (e) => {
     if (e.key === " ") {
         e.preventDefault();
-        changeCurrentSprite();
+        if (mode === "s") changeCurrentSprite();
+        else if (mode === "b") changeCurrentBackground();
     }
 });
 
 function paintSprite(coords) {
     const cell = getById(`cell-${coords}`);
-    const sprite = cell.children.item(0);
-    sprite.src = `img/${currentSprite}.png`;
-    sprite.setAttribute("data-sprite", currentSprite);
+    const sprite = mode === "b" ? cell.children.item(0) : cell.children.item(1);
+    sprite.src = `img/${mode === "b" ? currentBackground : currentSprite}${mode}.png`;
+    sprite.setAttribute("data-sprite", mode === "b" ? currentBackground : currentSprite);
 }
 
 function eraseSprite(coords) {
     const cell = getById(`cell-${coords}`);
-    const sprite = cell.children.item(0);
-    sprite.src = `img/00.png`;
+    const sprite = mode === "b" ? cell.children.item(0) : cell.children.item(1);
+    sprite.src = `img/00${mode}.png`;
     sprite.setAttribute("data-sprite", "00");
 }
 
 function pickSprite(coords) {
     const cell = getById(`cell-${coords}`);
-    const sprite = cell.children.item(0);
-    currentSprite = sprite.dataset.sprite;
-    currentSpriteElement.src = `img/${currentSprite}.png`;
+    const sprite = mode === "b" ? cell.children.item(0) : cell.children.item(1);
+    if (mode === "b") {
+        currentBackground = sprite.dataset.sprite;
+        currentBackgroundElement.src = `img/${currentBackground}b.png`;
+    } else if (mode === "s") {
+        currentSprite = sprite.dataset.sprite;
+        currentSpriteElement.src = `img/${currentSprite}s.png`;
+    }
 }
 
 function fillAreaWithSprite(coords) {
@@ -154,20 +202,20 @@ function initScreenEditable(preset) {
     let filling, topping;
     switch (preset) {
         case "grass":
-            filling = "img/02.png";
-            topping = "img/01.png";
+            filling = "img/02b.png";
+            topping = "img/01b.png";
             break;
         case "ocean":
-            filling = "img/04.png";
-            topping = "img/05.png";
+            filling = "img/03b.png";
+            topping = "img/04b.png";
             break;
         case "stone":
-            filling = "img/08.png";
-            topping = "img/09.png";
+            filling = "img/05b.png";
+            topping = "img/06b.png";
             break;
         default:
-            filling = "img/02.png";
-            topping = "img/01.png";
+            filling = "img/02b.png";
+            topping = "img/01b.png";
             break;
     }
     screenContent.innerHTML = "";
@@ -185,21 +233,25 @@ function initScreenEditable(preset) {
             cell.addEventListener("mousedown", (e) => spriteMouseDownHandler(e, cellCoords));
             cell.addEventListener("mouseup", (e) => spriteMouseUpHandler(e));
             cell.addEventListener("mouseover", (e) => spriteMouseOverHandler(e, cellCoords));
-            const sprite = document.createElement("img");
+            const background = document.createElement("img");
             if (y > 18) {
-                sprite.src = filling;
-                sprite.setAttribute("data-sprite", filling.substring(4, 6));
+                background.src = filling;
+                background.setAttribute("data-sprite", filling.substring(4, 6));
             } else {
                 if (y === 18) {
-                    sprite.src = topping;
-                    sprite.setAttribute("data-sprite", topping.substring(4, 6));
+                    background.src = topping;
+                    background.setAttribute("data-sprite", topping.substring(4, 6));
                 } else {
-                    sprite.src = "img/00.png";
-                    sprite.setAttribute("data-sprite", "00");
+                    background.src = "img/00b.png";
+                    background.setAttribute("data-sprite", "00");
                 }
             }
-
-            sprite.classList.add("background-sprite");
+            background.classList.add("background-img");
+            const sprite = document.createElement("img");
+            sprite.src = "img/00s.png";
+            sprite.setAttribute("data-sprite", "00");
+            sprite.classList.add("sprite-img");
+            cell.appendChild(background);
             cell.appendChild(sprite);
             row.appendChild(cell);
         }
@@ -226,5 +278,6 @@ stonePreset.addEventListener("click", (e) => {
 });
 
 initScreenEditable("grass");
+changeMode("b");
 
 screenContainer.appendChild(screenContent);

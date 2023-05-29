@@ -35,12 +35,12 @@ body {
     justify-content: center;
 }
 
-.buttons>button {
+.buttons > button {
     border-radius: 5px;
     padding: 2px;
 }
 
-.buttons>div>button {
+.buttons > div > button {
     padding: 4px;
     width: 20px;
     height: 20px;
@@ -54,7 +54,7 @@ body {
     color: #ccc;
 }
 
-.presets>button {
+.presets > button {
     border-radius: 5px;
     padding: 2px;
     margin: 0 10px;
@@ -62,12 +62,12 @@ body {
 
 #grass-preset {
     background-color: #363;
-    color: white
+    color: white;
 }
 
 #ocean-preset {
     background-color: #336;
-    color: white
+    color: white;
 }
 
 #stone-preset {
@@ -82,13 +82,27 @@ body {
     width: 24px;
     height: 24px;
     pointer-events: none;
+    position: relative
 }
 
-.background-sprite {
+.sprite-img {
     width: 24px;
     height: 24px;
     image-rendering: pixelated;
     transition: 0.1s;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.background-img {
+    width: 24px;
+    height: 24px;
+    image-rendering: pixelated;
+    transition: 0.1s;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .editable {
@@ -100,7 +114,7 @@ body {
     filter: brightness(120%);
 }
 
-.current-element {
+.current-sprite-element {
     width: 36px;
     height: 36px;
     image-rendering: pixelated;
@@ -108,6 +122,22 @@ body {
     top: 24px;
     left: 24px;
     border: 2px solid #0995;
+    box-sizing: content-box;
+}
+
+.current-background-element {
+    width: 36px;
+    height: 36px;
+    image-rendering: pixelated;
+    position: fixed;
+    top: 72px;
+    left: 24px;
+    border: 2px solid #0995;
+    box-sizing: content-box;
+}
+
+.selected-element{
+    border: 2px solid #ccc;
 }
 
 .screen-content {
